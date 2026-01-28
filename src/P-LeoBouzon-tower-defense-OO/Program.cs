@@ -5,8 +5,6 @@ namespace P_LeoBouzon_tower_defense_OO
 {
     internal class Program
     {
-
-
         static void Main(string[] args)
         {
             // ----- VARIABLES -----
@@ -27,6 +25,7 @@ namespace P_LeoBouzon_tower_defense_OO
             int oldEnnemiPosition;                                                  // Ancienne position d'un ennemi
             int ennemiMouvementX = 1;                                               // Mouvement horizontal d'un ennemi
             int chemin = 0;                                                         // Initialisation du chemin en "═"
+            int portee = 1;                                                         // Portée des tours
             MenuDeLancement();
             PlacerTour();
             DeplacerEnnemis();
@@ -207,7 +206,7 @@ namespace P_LeoBouzon_tower_defense_OO
                 {
                     if (!ennemiTouche && tourPlace[i] == 1)
                     {
-                        if ((i - 1 >= 0 && ennemiPosition >= i - 1) || (ennemiPosition == i) || (i + 1 < tourPlace.Length && ennemiPosition == i + 1 ))
+                        if (ennemiPosition >= i - portee && ennemiPosition <= i + portee)
                         {
                             
                             CalculerDegats();
