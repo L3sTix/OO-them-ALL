@@ -1,14 +1,30 @@
 ﻿using System.Data.Common;
-
+using System.Threading;
 namespace P_LeoBouzon_tower_defense_OO
 {
     internal class Program
     {
+
+
         static void Main(string[] args)
         {
-            airDeJeu();
-            
-            
+            int[] tourPlace = new int[20];
+            int towerPosition = tourPlace[0];
+            int[] cheminDeJeu = new int[20];
+            int maxMoveX = 19;
+            int towerMouvementX = 1;
+            int minMoveX = 0;
+            int oldTowerPosition;
+            int toursPlacees = 0;
+            int maxTours = 4;
+            int ennemiPV = 100;
+            int ennemiPosition = 0;
+            int oldEnnemiPosition;
+            int ennemiMouvementX = 1;
+            MenuDeLancement();
+            PlacerTour();
+            DeplacerEnnemis();
+            Console.ReadLine();
             static void MenuDeLancement()
             {
                 Console.WriteLine("--------------------------------");
@@ -18,121 +34,133 @@ namespace P_LeoBouzon_tower_defense_OO
                 Console.WriteLine("----- créé par Léo Bouzon ------");
                 Console.WriteLine("--------------------------------");
                 Console.WriteLine("\nCe jeu est un Tower Defense, votre objectif est de tirer sur les ennemis grâce au tour placées sur la carte de jeu");
-                Console.WriteLine("Merci d'appuyer sur SPACE ou ENTER afin de continuer vers le jeu");
+                Console.WriteLine("Merci d'appuyer sur une touche afin de continuer vers le jeu");
 
-            
+                Console.ReadKey();
+                Console.Clear();
             }
-            static void airDeJeu()
+            void PlacerTour()
             {
-                int xBoard = 0;
-                int yBoard = 0;
-
-                for (byte i = 0; i < 10 ; i++)
-                {
-                        Console.SetCursorPosition(xBoard, yBoard);
-                        Console.Write("║   ║");
-                        yBoard += 1;
-                }
-                
-            }
-            static void PlacerTour()
-            {
-                int[] tourPlace = new int[20];
-                int towerPosition = tourPlace[0];
-                int maxMoveX = 19;
-                int mouvementX = 1;
-                int minMoveX = 0;
                 ConsoleKeyInfo towerMove;
-                do 
-                { 
+
+                Console.Clear();
+                Console.CursorVisible = false;
+
+                while(toursPlacees < maxTours)
+                {
                     towerMove = Console.ReadKey(true);
+                    oldTowerPosition = towerPosition;
+
                     switch (towerMove.Key)
                     {
                         case ConsoleKey.RightArrow:
                             
-                            Console.Write(" ");
-                            if (towerPosition < maxMoveX)
-                            {  
-                                towerPosition += mouvementX;
-                            }
-                            else
-                            {
-                                towerPosition = minMoveX;
-                            }
-                            Console.Write("T");
+                                if (towerPosition < maxMoveX)
+                                {
+                                    towerPosition += towerMouvementX;
+                                }
+                                else
+                                {
+                                    towerPosition = minMoveX;
+                                }   
                             break;
 
                         case ConsoleKey.LeftArrow:
                             
-                            Console.Write(" ");
-                            if (towerPosition > minMoveX)
-                            {
-                                towerPosition -= mouvementX;
-                            }                               
-                            else
-                            {
-                                towerPosition = maxMoveX;
-                            }
-                            Console.Write("T");
+                                if (towerPosition > minMoveX)
+                                {
+                                    towerPosition -= towerMouvementX;
+                                }
+                                else
+                                {
+                                    towerPosition = maxMoveX;
+                                }
                             break;
                     }
+                    if ((towerMove.Key == ConsoleKey.Enter || towerMove.Key == ConsoleKey.Spacebar) && toursPlacees < maxTours && tourPlace[towerPosition] == 0)
+                    {
+                        tourPlace[towerPosition] = 1;
+                        toursPlacees ++;
+                    }
+                    Console.SetCursorPosition(0, 0);
+                    Console.Write(new string(' ', maxMoveX + 1));
+ 
+                    for (int i = 0; i <= maxMoveX; i++)
+                    {
+                        if (tourPlace[i] == 1)
+                        {
+                            Console.SetCursorPosition(i, 0);
+                            Console.Write("T");
+                        }
+                    }
                     Console.SetCursorPosition(towerPosition, 0);
-                    
-                } while (true) ;
-
-            }
-            static void DeplacerEnnemis()
-            {
-                string[] cheminDeJeu = new string[20];
-                int positionEnnemi = 0;
-                ConsoleKeyInfo keyInput;
-                // initialise tout le chemin de jeu avec des tirets
-                for (int i = 0; i < cheminDeJeu.Length; i++)
-                {
-                    cheminDeJeu[i] = "-";
-                    Console.Write("-");
+                    Console.Write("T");     
                 }
-
-                //Position de l'ennemi sur le chemin de jeu
-                cheminDeJeu[positionEnnemi] = "E";
+            }
+            void DeplacerEnnemis()
+            {
+                Console.CursorVisible = false;
+                Console.SetCursorPosition(ennemiPosition, 2);
                 Console.Write("E");
-                
-                
-                //faire se déplacer l'ennemi
-                
-                
-                    //réécrire à chaque fois la console
-                    Console.Clear();
+                do
+                {
+                    oldEnnemiPosition = ennemiPosition;
 
-                    for (int i = 0; i < cheminDeJeu.Length; i++)
+                    if (ennemiPosition < cheminDeJeu.Length)
                     {
-                        Console.Write(cheminDeJeu[i] = " ");
-                        Console.Write("-");
+                        ennemiPosition += ennemiMouvementX;
+                    }
+                    else
+                    {
+                        ennemiPosition = ennemiMouvementX;
                     }
 
-                    //temps de déplacement
-                    Thread.Sleep(500000);
+                    Console.SetCursorPosition(oldEnnemiPosition, 2);
+                    Console.Write(" ");
 
-                    //réécris le chemin
-                    
-
-                    //incrémente la position de l'ennemi
-                    positionEnnemi++;
-
-                    if (positionEnnemi >= cheminDeJeu.Length)
-                    {
-                        Environment.Exit(0);
-                    }
-                    cheminDeJeu[positionEnnemi] = "E";
+                    Console.SetCursorPosition(ennemiPosition, 2);
                     Console.Write("E");
-            }
-            static void TirerTour()
-            {
-                
-            }
-            static void CalculerDegats()
-            {
 
+                    TirerTour();
+
+                    Thread.Sleep(1000);
+                } while (ennemiPosition != cheminDeJeu.Length);
+                if (ennemiPV <= 0)
+                {
+                    Console.SetCursorPosition(0, 6);
+                    Console.WriteLine("YOU WIN !");
+                }
+            }
+            
+            void TirerTour()
+            {
+                if (ennemiPV <= 0);
+                bool ennemiTouche = false;
+
+                for (int i = 0; i < tourPlace.Length; i++)
+                {
+                    if (!ennemiTouche && tourPlace[i] == 1)
+                    {
+                        if ((i - 1 >= 0 && ennemiPosition >= i - 1) || (ennemiPosition == i) || (i + 1 < tourPlace.Length && ennemiPosition == i + 1 ))
+                        {
+                            CalculerDegats();
+                            ennemiTouche = true;
+                        }
+                    }
+                }
+            }
+            void CalculerDegats()
+            {
+                int degats = 25;
+                ennemiPV -= degats;
+
+                if (ennemiPV < 0) ennemiPV = 0;
+
+                Console.SetCursorPosition(0, 4);
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write($"L'ennemi est touché (-" + degats + " PV) ");
+                Console.ResetColor();
+                Console.Write($"PV restants : {ennemiPV} ");
             }
         }
     }
