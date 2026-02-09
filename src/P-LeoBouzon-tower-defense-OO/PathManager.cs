@@ -24,15 +24,14 @@ namespace P_LeoBouzon_tower_defense_OO
 
             for (int i = 0; i < GamePath.Length + 1; i++)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.SetCursorPosition(xPath, 2);
                 Console.Write("═");
                 Console.SetCursorPosition(xPath, 4);
                 Console.Write("═");
                 xPath += 1;
-                Console.ResetColor();
-
             }
+            Console.ResetColor();
             Console.SetCursorPosition(20, 3);
             Console.Write("C");
             Console.SetCursorPosition(enemyPosition, 3);
@@ -47,35 +46,11 @@ namespace P_LeoBouzon_tower_defense_OO
                 {
 
                     enemyPosition = GamePath.Length;
-                    Console.SetCursorPosition(0, 7);
-                    Console.Write($"Ennemi Mort ");
-                    Thread.Sleep(1000);
-                    Console.Clear();
-                    Console.CursorVisible = false;
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.SetCursorPosition(30, 10);
-                    Console.WriteLine("###############################################################");
-                    Console.SetCursorPosition(30, 11);
-                    Console.WriteLine("#                                                             #");
-                    Console.SetCursorPosition(30, 12);
-                    Console.WriteLine("#   ██╗   ██╗  ██████╗ ██╗   ██╗  ██╗    ██╗ ██╗ ███╗   ██╗   #");
-                    Console.SetCursorPosition(30, 13);
-                    Console.WriteLine("#   ╚██╗ ██╔╝ ██╔═══██╗██║   ██║  ██║    ██║ ██║ ████╗  ██║   #");
-                    Console.SetCursorPosition(30, 14);
-                    Console.WriteLine("#    ╚████╔╝  ██║   ██║██║   ██║  ██║ █╗ ██║ ██║ ██╔██╗ ██║   #");
-                    Console.SetCursorPosition(30, 15);
-                    Console.WriteLine("#      ██╔╝   ██║   ██║██║   ██║  ██║███╗██║ ██║ ██║╚██╗██║   #");
-                    Console.SetCursorPosition(30, 16);
-                    Console.WriteLine("#      ██║    ╚██████╔╝╚██████╔╝  ╚███╔███╔╝ ██║ ██║ ╚████║   #");
-                    Console.SetCursorPosition(30, 17);
-                    Console.WriteLine("#      ╚═╝     ╚═════╝  ╚═════╝    ╚══╝╚══╝  ╚═╝ ╚═╝  ╚═══╝   #");
-                    Console.SetCursorPosition(30, 18);
-                    Console.WriteLine("#                                                             #");
-                    Console.SetCursorPosition(30, 19);
-                    Console.WriteLine("###############################################################");
-                    Console.ResetColor();
+                    WinCondition.GameWin();
+                    WinCondition.win = true;
 
                 }
+                
                 else
                 {
                     enemyOldPosition = enemyPosition;
@@ -98,6 +73,7 @@ namespace P_LeoBouzon_tower_defense_OO
                     TowerManager.HandleTargetting();
                     if (EnemyManager.enemyHP <= 0)
                     {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.SetCursorPosition(enemyPosition, 3);
                         Console.Write("X");
                     }
@@ -105,7 +81,10 @@ namespace P_LeoBouzon_tower_defense_OO
                 }
 
             } while (enemyPosition != GamePath.Length);
-
+            if (WinCondition.win == false)
+            {
+                WinCondition.GameLose();
+            }
         }
     }
 }

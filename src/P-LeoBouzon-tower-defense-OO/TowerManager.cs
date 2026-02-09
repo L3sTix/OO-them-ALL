@@ -17,7 +17,7 @@ namespace P_LeoBouzon_tower_defense_OO
         public static int towerPlaced = 0;
         public static int maxTower = 4;
         public static int range = 1;
-        public static int damages = 25;
+        public static int damages = 10;
         public static bool enemyHit = true;
 
         // ========== TOWER PLACEMENT ==========
