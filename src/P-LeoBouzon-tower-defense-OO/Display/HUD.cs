@@ -22,5 +22,18 @@ namespace P_LeoBouzon_tower_defense_OO.Display
             Console.Write($"L'ennemi est touché (-" + TowerManager.damages + " PV) ");
             Console.ResetColor();
         }
+        public static void GameLegend()
+        {
+            Console.SetCursorPosition(50, 4);
+            Console.Write("Tour = T");
+            Console.SetCursorPosition(50, 5);
+            Console.Write("Ennemi = E");
+            Console.SetCursorPosition(50, 6);
+            Console.Write("Chemin = ═");
+            Console.SetCursorPosition(50, 7);
+            Console.Write(@"Projectile = '/', '|', '\'");
+            Console.SetCursorPosition(50, 8);
+            Console.Write("Chateau = C");
+        }
     }
 }

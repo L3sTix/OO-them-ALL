@@ -23,6 +23,7 @@ namespace P_LeoBouzon_tower_defense_OO
         // ========== TOWER PLACEMENT ==========
         public static void TowerPlacement()
         {
+            
             ConsoleKeyInfo towerMove;
 
             Console.Clear();
@@ -77,6 +78,7 @@ namespace P_LeoBouzon_tower_defense_OO
                 }
                 Console.SetCursorPosition(towerPosition, 0);
                 Console.Write("T");
+                HUD.GameLegend();
             }
         }
         // ========== TOWER SHOT SYSTEM ==========
@@ -87,14 +89,15 @@ namespace P_LeoBouzon_tower_defense_OO
                 enemyHit = false;
             }
 
-
+            Bullet.EraseBullet(1);
             for (int i = 0; i < TowerPlace.Length; i++)
             {
+                
                 if (enemyHit && TowerPlace[i] == 1)
                 {
                     if (PathManager.enemyPosition >= i - range && PathManager.enemyPosition <= i + range)
                     {
-
+                        Bullet.Shot();
                         DamageCalculation();
                         if (EnemyManager.enemyHP <= 0)
                         {

@@ -9,9 +9,11 @@ namespace P_LeoBouzon_tower_defense_OO
     {
         static void Main(string[] args)
         {
+
             // ========== MAIN CODE ========== 
             Menu.LaunchMenu();
             TowerManager.TowerPlacement();
+            HUD.GameLegend();
             PathManager.MoveEnemies();
             Console.ReadLine();
         }

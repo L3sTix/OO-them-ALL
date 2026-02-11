@@ -77,7 +77,7 @@ namespace P_LeoBouzon_tower_defense_OO
                         Console.SetCursorPosition(enemyPosition, 3);
                         Console.Write("X");
                     }
-                    Thread.Sleep(1000);
+                    Thread.Sleep(2000);
                 }
 
             } while (enemyPosition != GamePath.Length);
