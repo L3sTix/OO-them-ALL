@@ -1,4 +1,12 @@
-﻿using System;
+﻿///***************************************************************************
+/// ETML
+/// Auteur          : Léo Bouzon
+/// Date            : 09.02.2026
+/// Description     : Classe servant à gérer tout les éléments et les méthodes
+///                   utilisées pour afficher les écrans de victoire et de 
+///                   défaite.
+///***************************************************************************
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

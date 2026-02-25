@@ -1,4 +1,12 @@
-﻿using System;
+﻿///*****************************************************************************
+/// ETML
+/// Auteur          : Léo Bouzon
+/// Date            : 11.02.2026
+/// Description     : Classe servant à gérer tout les éléments et les méthodes
+///                   utilisées pour l'affichage des projectiles lancés par 
+///                   les tours.
+///*****************************************************************************
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,6 +46,11 @@ namespace P_LeoBouzon_tower_defense_OO
                         Console.SetCursorPosition(i + TowerManager.range, 1);
                         Console.Write(@"\");
                         
+                    }
+                    else if(PathManager.enemyPosition == i - TowerManager.range || PathManager.enemyPosition == i)
+                    {
+                        Console.SetCursorPosition(i, 1);
+                        Console.Write(@"V");
                     }
                     
                 }

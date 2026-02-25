@@ -1,4 +1,11 @@
-﻿using System;
+﻿///*****************************************************************************
+/// ETML
+/// Auteur          : Léo Bouzon
+/// Date            : 04.02.2026
+/// Description     : Classe servant à gérer tout les éléments et les méthodes
+///                   utilisées pour le chemin que les ennemis parcourent.
+///*****************************************************************************
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

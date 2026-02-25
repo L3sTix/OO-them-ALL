@@ -1,4 +1,11 @@
-﻿using System;
+﻿///*****************************************************************************
+/// ETML
+/// Auteur          : Léo Bouzon
+/// Date            : 09.02.2026
+/// Description     : Classe servant à gérer tout les éléments et les méthodes
+///                   utilisées pour afficher les HUD (Heads-Up Display) du jeu.
+///*****************************************************************************
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

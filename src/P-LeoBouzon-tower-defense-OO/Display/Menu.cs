@@ -1,4 +1,11 @@
-﻿using System;
+﻿///***************************************************************************
+/// ETML
+/// Auteur          : Léo Bouzon
+/// Date            : 09.02.2026
+/// Description     : Classe servant à gérer tout les éléments et les méthodes
+///                   utilisées pour l'affichage du menu d'avant jeu.
+///***************************************************************************
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
