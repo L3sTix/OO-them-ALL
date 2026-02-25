@@ -14,22 +14,22 @@ namespace P_LeoBouzon_tower_defense_OO.Display
 {
     internal class HUD
     {
-        public static void InitialPV()
+        public void InitialPV()
         {
-            Console.Write($"PV restants : {EnemyManager.enemyInitialHP} ");
+            Console.Write($"PV restants : {Enemy.enemyInitialHP} ");
         }
-        public static void RemainingPV()
+        public void RemainingPV()
         {
-            Console.Write($"PV restants : {EnemyManager.enemyHP} ");
+            Console.Write($"PV restants : {Enemy.enemyHP} ");
 
         }
-        public static void DamageDisplay()
+        public void DamageDisplay()
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.Write($"L'ennemi est touché (-" + TowerManager.damages + " PV) ");
             Console.ResetColor();
         }
-        public static void GameLegend()
+        public void GameLegend()
         {
             Console.SetCursorPosition(50, 4);
             Console.Write("Tour = T");

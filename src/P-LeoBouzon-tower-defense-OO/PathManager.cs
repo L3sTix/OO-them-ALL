@@ -17,15 +17,33 @@ namespace P_LeoBouzon_tower_defense_OO
     internal class PathManager
     {
         // ========== PATH DATA ==========
-        public static int[] GamePath = new int[20];
-        public static int enemyOldPosition;
-        public static int enemyPosition = 0;
-        public static int enemyXMovement = 1;
-        public static int xPath = 0;
-        public static int maxMoveX = 19;
-        public static int minMoveX = 1;
+        private int[] GamePath = new int[20];
+        private int enemyOldPosition;
+        private int enemyPosition = 0;
+        private int xPath = 0;
+        
+
+        private Enemy[] _enemies = new Enemy[1];
+
+        
+
+        //private Enemy _enemy1=new Enemy();
+
+        public Enemy[] Enemies { get { return _enemies; } }
+
+        // ========== constructeur qui créé 10 objets et les stock dans le tableau _enemies au dessus ==========
+        public PathManager()
+        {
+            //enemy = new Enemy();
+
+            for (int i = 0; i < _enemies.Length; i++)
+            {
+                _enemies[i] = new Enemy();
+            }
+        }
+
         // ========== ENEMIES PATH MOVEMENT ==========
-        public static void MoveEnemies()
+        public void MoveEnemies()
         {
             Console.CursorVisible = false;
 
@@ -39,55 +57,62 @@ namespace P_LeoBouzon_tower_defense_OO
                 xPath += 1;
             }
             Console.ResetColor();
-            Console.SetCursorPosition(20, 3);
+            Console.SetCursorPosition(GamePath.Length + 1 , 3);
             Console.Write("C");
             Console.SetCursorPosition(enemyPosition, 3);
             Console.Write("E");
             Console.SetCursorPosition(0, 5);
             HUD.InitialPV();
 
-
-            do
+            for (int i = 0; i < 1; i++)
             {
-                if (EnemyManager.enemyHP <= 0)
-                {
-
-                    enemyPosition = GamePath.Length;
-                    WinCondition.GameWin();
-                    WinCondition.win = true;
-
-                }
+                Enemy enemy = _enemies[i];
                 
-                else
+                do
                 {
-                    enemyOldPosition = enemyPosition;
-
-                    if (enemyPosition < GamePath.Length)
+                    if (enemy.enemyHP <= 0)
                     {
-                        enemyPosition += enemyXMovement;
+
+                        enemyPosition = GamePath.Length;
+                        WinCondition.GameWin();
+                        WinCondition.win = true;
+
                     }
+
                     else
                     {
-                        enemyPosition = enemyXMovement;
-                    }
+                        enemyOldPosition = enemyPosition;
 
-                    Console.SetCursorPosition(enemyOldPosition, 3);
-                    Console.Write(" ");
+                        if (enemyPosition < GamePath.Length)
+                        {
+                            enemyPosition += enemy.enemyXMovement;
+                        }
+                        else
+                        {
+                            enemyPosition = enemy.enemyXMovement;
+                        }
 
-                    Console.SetCursorPosition(enemyPosition, 3);
-                    Console.Write("E");
+                        Console.SetCursorPosition(enemyOldPosition, 3);
+                        Console.Write(" ");
 
-                    TowerManager.HandleTargetting();
-                    if (EnemyManager.enemyHP <= 0)
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.SetCursorPosition(enemyPosition, 3);
-                        Console.Write("X");
-                    }
-                    Thread.Sleep(2000);
-                }
+                        Console.Write("E");
 
-            } while (enemyPosition != GamePath.Length);
+                        TowerManager.HandleTargetting();
+                        if (enemy.enemyHP <= 0)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.SetCursorPosition(enemyPosition, 3);
+                            Console.Write("X");
+                        }
+                        Thread.Sleep(2000);
+                    }
+
+                } while (enemyPosition != GamePath.Length);
+            }
+
+
+            
             if (WinCondition.win == false)
             {
                 WinCondition.GameLose();

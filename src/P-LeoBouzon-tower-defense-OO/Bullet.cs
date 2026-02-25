@@ -17,7 +17,7 @@ namespace P_LeoBouzon_tower_defense_OO
     internal class Bullet
     {
         
-        public static void Shot()
+        public void Shot()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             EraseBullet(1);
@@ -58,7 +58,7 @@ namespace P_LeoBouzon_tower_defense_OO
             }
             Console.ResetColor();
         }
-        public static void EraseBullet(int line)
+        public void EraseBullet(int line)
         {
             Console.SetCursorPosition(0, line);
             for (int i = 0; i < TowerManager.TowerPlace.Length; i++)

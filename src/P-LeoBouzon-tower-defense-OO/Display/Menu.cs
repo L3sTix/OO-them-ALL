@@ -18,11 +18,13 @@ namespace P_LeoBouzon_tower_defense_OO.Display
     internal class Menu
     {
         // ========== MENU DATA ==========
-        public static int yIncremental = 0;
-        public static int yMax = 7;
+       
+        private const int yMax = 7;
         // ========== GAME MENU ==========
-        public static void LaunchMenu()
+        public void LaunchMenu()
         {
+            int yIncremental = 0;
+
             HorizontaleLine('╔', '═', 5, 30, '╗', yIncremental);
             for (int i = yIncremental + 1; i < yMax; i++)
             {
@@ -45,7 +47,7 @@ namespace P_LeoBouzon_tower_defense_OO.Display
             Console.ReadKey();
             Console.Clear();
         }
-        public static void HorizontaleLine(char startLine, char line, int startX, int length, char finishLine, int y)
+        private void HorizontaleLine(char startLine, char line, int startX, int length, char finishLine, int y)
         {
             int x = startX + length;
             Console.SetCursorPosition(startX, y);

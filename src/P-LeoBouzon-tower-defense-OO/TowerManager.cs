@@ -17,18 +17,26 @@ namespace P_LeoBouzon_tower_defense_OO
     internal class TowerManager
     {
         // ========== TOWER DATA ==========
-        public static int[] TowerPlace = new int[20];
-        public static int towerPosition = TowerPlace[0];
-        public static int towerXMovement = 1;
-        public static int oldTowerPosition;
-        public static int towerPlaced = 0;
-        public static int maxTower = 4;
-        public static int range = 1;
-        public static int damages = 10;
-        public static bool enemyHit = true;
+        private int[] TowerPlace = new int[20];
+        private int towerPosition;
+        private int towerXMovement = 1;
+        private int oldTowerPosition;
+        private int towerPlaced = 0;
+        private int maxTower = 4;
+        private int range = 1;
+        private int damages = 10;
+        private bool enemyHit = true;
+        private int maxMoveX = 19;
+        private int minMoveX = 1;
+
+        private PathManager pm;
+        public TowerManager(PathManager pm)
+        {
+            this.pm = pm;
+        }
 
         // ========== TOWER PLACEMENT ==========
-        public static void TowerPlacement()
+        public void TowerPlacement()
         {
             
             ConsoleKeyInfo towerMove;
@@ -45,25 +53,25 @@ namespace P_LeoBouzon_tower_defense_OO
                 {
                     case ConsoleKey.RightArrow:
 
-                        if (towerPosition < PathManager.maxMoveX)
+                        if (towerPosition < maxMoveX)
                         {
                             towerPosition += towerXMovement;
                         }
                         else
                         {
-                            towerPosition = PathManager.minMoveX;
+                            towerPosition = minMoveX;
                         }
                         break;
 
                     case ConsoleKey.LeftArrow:
 
-                        if (towerPosition > PathManager.minMoveX)
+                        if (towerPosition > minMoveX)
                         {
                             towerPosition -= towerXMovement;
                         }
                         else
                         {
-                            towerPosition = PathManager.maxMoveX;
+                            towerPosition = maxMoveX;
                         }
                         break;
                 }
@@ -73,9 +81,9 @@ namespace P_LeoBouzon_tower_defense_OO
                     towerPlaced++;
                 }
                 Console.SetCursorPosition(0, 0);
-                Console.Write(new string(' ', PathManager.maxMoveX + 1));
+                Console.Write(new string(' ', maxMoveX + 1));
 
-                for (int i = 0; i <= PathManager.maxMoveX; i++)
+                for (int i = 0; i <= maxMoveX; i++)
                 {
                     if (TowerPlace[i] == 1)
                     {
@@ -89,9 +97,9 @@ namespace P_LeoBouzon_tower_defense_OO
             }
         }
         // ========== TOWER SHOT SYSTEM ==========
-        public static void HandleTargetting()
+        public void HandleTargetting()
         {
-            if (EnemyManager.enemyHP <= 0)
+            if (pm.Enemies[i]enemyHP <= 0)
             {
                 enemyHit = false;
             }
@@ -102,11 +110,11 @@ namespace P_LeoBouzon_tower_defense_OO
                 
                 if (enemyHit && TowerPlace[i] == 1)
                 {
-                    if (PathManager.enemyPosition >= i - range && PathManager.enemyPosition <= i + range)
+                    if (pm.enemyPosition >= i - range && PathManager.enemyPosition <= i + range)
                     {
                         Bullet.Shot();
                         DamageCalculation();
-                        if (EnemyManager.enemyHP <= 0)
+                        if (Enemy.enemyHP <= 0)
                         {
                             enemyHit = false;
                         }
@@ -116,13 +124,13 @@ namespace P_LeoBouzon_tower_defense_OO
             }
         }
         // ========== DAMAGE INFLICTED ==========
-        public static void DamageCalculation()
+        public void DamageCalculation()
         {
-            EnemyManager.enemyHP -= damages;                                             // le nombre de PV de l'ennemi diminue de 25 quand il est touché
+            Enemy.enemyHP -= damages;                                             // le nombre de PV de l'ennemi diminue de 25 quand il est touché
 
-            if (EnemyManager.enemyHP < 0)
+            if (Enemy.enemyHP < 0)
             {
-                EnemyManager.enemyHP = 0;
+                Enemy.enemyHP = 0;
 
             }
             Console.SetCursorPosition(0, 5);

@@ -17,9 +17,9 @@ namespace P_LeoBouzon_tower_defense_OO.Display
     internal class WinCondition
     {
         // ========== WIN CONDITION DATA ==========
-        public static bool win = false;
+        public bool win = false;
         // ========== WIN DISPLAY ==========
-        public static void GameWin()
+        public void GameWin()
         {
             Console.SetCursorPosition(0, 7);
             Console.Write($"Ennemi Mort ");
@@ -51,7 +51,7 @@ namespace P_LeoBouzon_tower_defense_OO.Display
             Console.ResetColor();
         }
         // ========== LOSE DISPLAY ==========
-        public static void GameLose()
+        public void GameLose()
         {
             Console.SetCursorPosition(0, 7);
             Console.Write($"You're dead ");

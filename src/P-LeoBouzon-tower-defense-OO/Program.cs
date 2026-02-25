@@ -21,10 +21,21 @@ namespace P_LeoBouzon_tower_defense_OO
         {
 
             // ========== MAIN CODE ========== 
-            Menu.LaunchMenu();
-            TowerManager.TowerPlacement();
+            Menu menu = new Menu();
+            menu.LaunchMenu();
+
+
+
+
             HUD.GameLegend();
-            PathManager.MoveEnemies();
+
+            PathManager path = new PathManager();
+
+            TowerManager manager = new TowerManager(path);
+
+            TowerManager.TowerPlacement();
+
+            path.MoveEnemies();
             Console.ReadLine();
         }
     }

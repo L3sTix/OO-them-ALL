@@ -16,11 +16,17 @@ using P_LeoBouzon_tower_defense_OO.Display;
 
 namespace P_LeoBouzon_tower_defense_OO
 {
-    static class EnemyManager
+    internal class Enemy
     {
         // ========== ENNEMIES DATA ==========
-        public static int enemyInitialHP = 100;
-        public static int enemyHP = enemyInitialHP;
+        private int enemyInitialHP = 100;
+        private int enemyHP;
+        private int enemyXMovement = 1;
+
+        public Enemy()
+        {
+            enemyHP = enemyInitialHP;
+        }
 
     }
 }
