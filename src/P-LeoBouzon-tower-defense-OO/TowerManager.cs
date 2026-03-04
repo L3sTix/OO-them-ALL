@@ -16,23 +16,43 @@ namespace P_LeoBouzon_tower_defense_OO
 {
     internal class TowerManager
     {
+        private HUD _hud;
+        public HUD Hud { set { _hud = value; } }
+        
+        private Enemy _enemy;
+        public Enemy Enemy { set { _enemy = value; } }
         // ========== TOWER DATA ==========
-        private int[] TowerPlace = new int[20];
+        private int[] _TowerPlace = new int[20];
+        public int[] TowerPlace
+        {
+            get { return _TowerPlace; }
+        }
         private int towerPosition;
         private int towerXMovement = 1;
         private int oldTowerPosition;
         private int towerPlaced = 0;
         private int maxTower = 4;
-        private int range = 1;
-        private int damages = 10;
+        private int _range = 1;
+        public int range
+        {
+            get { return _range; }
+        }
+        private int _damages = 10;
+        public int damages
+        {
+            get { return _damages; }
+        }
         private bool enemyHit = true;
         private int maxMoveX = 19;
         private int minMoveX = 1;
 
-        private PathManager pm;
-        public TowerManager(PathManager pm)
+        private Bullet _bullet;
+
+        private PathManager _pathmanager;
+        public TowerManager(PathManager pathmanager)
         {
-            this.pm = pm;
+            this._pathmanager = pathmanager;
+            _bullet = new Bullet(this, pathmanager);
         }
 
         // ========== TOWER PLACEMENT ==========
@@ -93,28 +113,28 @@ namespace P_LeoBouzon_tower_defense_OO
                 }
                 Console.SetCursorPosition(towerPosition, 0);
                 Console.Write("T");
-                HUD.GameLegend();
+                _hud.GameLegend();
             }
         }
         // ========== TOWER SHOT SYSTEM ==========
         public void HandleTargetting()
         {
-            if (pm.Enemies[i]enemyHP <= 0)
+            if (_enemy.enemyHP <= 0)
             {
                 enemyHit = false;
             }
 
-            Bullet.EraseBullet(1);
+            _bullet.EraseBullet(1);
             for (int i = 0; i < TowerPlace.Length; i++)
             {
                 
                 if (enemyHit && TowerPlace[i] == 1)
                 {
-                    if (pm.enemyPosition >= i - range && PathManager.enemyPosition <= i + range)
+                    if (_pathmanager.enemyPosition >= i - range && _pathmanager.enemyPosition <= i + range)
                     {
-                        Bullet.Shot();
+                        _bullet.Shot();
                         DamageCalculation();
-                        if (Enemy.enemyHP <= 0)
+                        if (_enemy.enemyHP <= 0)
                         {
                             enemyHit = false;
                         }
@@ -124,19 +144,19 @@ namespace P_LeoBouzon_tower_defense_OO
             }
         }
         // ========== DAMAGE INFLICTED ==========
-        public void DamageCalculation()
+        private void DamageCalculation()
         {
-            Enemy.enemyHP -= damages;                                             // le nombre de PV de l'ennemi diminue de 25 quand il est touché
+            _enemy.enemyHP -= damages;                                             // le nombre de PV de l'ennemi diminue de 25 quand il est touché
 
-            if (Enemy.enemyHP < 0)
+            if (_enemy.enemyHP < 0)
             {
-                Enemy.enemyHP = 0;
+                _enemy.enemyHP = 0;
 
             }
             Console.SetCursorPosition(0, 5);
-            HUD.RemainingPV();
+            _hud.RemainingPV();
             Console.SetCursorPosition(0, 6);
-            HUD.DamageDisplay();
+            _hud.DamageDisplay();
         }
     }
 }

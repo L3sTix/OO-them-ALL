@@ -17,7 +17,12 @@ namespace P_LeoBouzon_tower_defense_OO.Display
     internal class WinCondition
     {
         // ========== WIN CONDITION DATA ==========
-        public bool win = false;
+        private bool _win = false;
+        public bool Win
+        {
+            get { return _win; }
+            set { _win = value; }
+        }
         // ========== WIN DISPLAY ==========
         public void GameWin()
         {

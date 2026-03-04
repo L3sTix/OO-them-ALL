@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using P_LeoBouzon_tower_defense_OO.Display;
@@ -16,31 +17,31 @@ namespace P_LeoBouzon_tower_defense_OO
 {
     internal class PathManager
     {
+        private HUD _hud;
+        private WinCondition _winCondition = new WinCondition();
+        private TowerManager _towerManager;
+        private Enemy _enemy;
+
+        public HUD Hud {set{ _hud = value; } }
+        //public WinCondition WinCondition { set { _winCondition = value; } }
+        public TowerManager TowerManager { set { _towerManager = value; } }
+        public Enemy Enemy { set { _enemy = value; } }
+
+
+
+
         // ========== PATH DATA ==========
         private int[] GamePath = new int[20];
         private int enemyOldPosition;
-        private int enemyPosition = 0;
+        private int _enemyPosition = 0;
+        public int enemyPosition
+        {
+            get { return _enemyPosition; }
+        }
         private int xPath = 0;
         
 
-        private Enemy[] _enemies = new Enemy[1];
-
         
-
-        //private Enemy _enemy1=new Enemy();
-
-        public Enemy[] Enemies { get { return _enemies; } }
-
-        // ========== constructeur qui créé 10 objets et les stock dans le tableau _enemies au dessus ==========
-        public PathManager()
-        {
-            //enemy = new Enemy();
-
-            for (int i = 0; i < _enemies.Length; i++)
-            {
-                _enemies[i] = new Enemy();
-            }
-        }
 
         // ========== ENEMIES PATH MOVEMENT ==========
         public void MoveEnemies()
@@ -62,60 +63,58 @@ namespace P_LeoBouzon_tower_defense_OO
             Console.SetCursorPosition(enemyPosition, 3);
             Console.Write("E");
             Console.SetCursorPosition(0, 5);
-            HUD.InitialPV();
+            _hud.InitialPV();
 
-            for (int i = 0; i < 1; i++)
-            {
-                Enemy enemy = _enemies[i];
+            
                 
-                do
+            do
+            {
+                if (_enemy.enemyHP <= 0)
                 {
-                    if (enemy.enemyHP <= 0)
+
+                    _enemyPosition = GamePath.Length;
+                    _winCondition.GameWin();
+                    _winCondition.Win = true;
+
+                }
+
+                else
+                {
+                    enemyOldPosition = enemyPosition;
+
+                    if (enemyPosition < GamePath.Length)
                     {
-
-                        enemyPosition = GamePath.Length;
-                        WinCondition.GameWin();
-                        WinCondition.win = true;
-
+                        _enemyPosition += _enemy.enemyXMovement;
                     }
-
                     else
                     {
-                        enemyOldPosition = enemyPosition;
-
-                        if (enemyPosition < GamePath.Length)
-                        {
-                            enemyPosition += enemy.enemyXMovement;
-                        }
-                        else
-                        {
-                            enemyPosition = enemy.enemyXMovement;
-                        }
-
-                        Console.SetCursorPosition(enemyOldPosition, 3);
-                        Console.Write(" ");
-
-                        Console.SetCursorPosition(enemyPosition, 3);
-                        Console.Write("E");
-
-                        TowerManager.HandleTargetting();
-                        if (enemy.enemyHP <= 0)
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            Console.SetCursorPosition(enemyPosition, 3);
-                            Console.Write("X");
-                        }
-                        Thread.Sleep(2000);
+                        _enemyPosition = _enemy.enemyXMovement;
                     }
 
-                } while (enemyPosition != GamePath.Length);
-            }
+                    Console.SetCursorPosition(enemyOldPosition, 3);
+                    Console.Write(" ");
+
+                    Console.SetCursorPosition(enemyPosition, 3);
+                    Console.Write("E");
+
+                    _towerManager.HandleTargetting();
+                    if (_enemy.enemyHP <= 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.SetCursorPosition(enemyPosition, 3);
+                        Console.Write("X");
+                    }
+                    Thread.Sleep(2000);
+                }
+
+            } while (enemyPosition != GamePath.Length);
+            
 
 
             
-            if (WinCondition.win == false)
+            if (_winCondition.Win == false)
             {
-                WinCondition.GameLose();
+                _winCondition.GameLose();
             }
         }
     }

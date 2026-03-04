@@ -16,38 +16,47 @@ namespace P_LeoBouzon_tower_defense_OO
 {
     internal class Bullet
     {
+        private TowerManager _towerManager;
+        private PathManager _pathManager;
+        public Bullet(TowerManager towerManager, PathManager pathManager)
+        {
+            _towerManager = towerManager;
+            _pathManager = pathManager;
+        }
         
         public void Shot()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             EraseBullet(1);
-            for (int i = 0; i < TowerManager.TowerPlace.Length; i++)
+            
+            
+            for (int i = 0; i < _towerManager.TowerPlace.Length; i++)
             {
                 
 
-                if (TowerManager.TowerPlace[i] == 1)
+                if (_towerManager.TowerPlace[i] == 1)
                 {
                     
                     
-                    if (PathManager.enemyPosition == i - TowerManager.range)
+                    if (_pathManager.enemyPosition == i - _towerManager.range)
                     {
-                        Console.SetCursorPosition(i - TowerManager.range, 1);
+                        Console.SetCursorPosition(i - _towerManager.range, 1);
                         Console.Write("/");
                         
                     }
-                    else if (PathManager.enemyPosition == i)
+                    else if (_pathManager.enemyPosition == i)
                     {
                         Console.SetCursorPosition(i, 1);
                         Console.Write("|");
                         
                     }
-                    else if (PathManager.enemyPosition == i + TowerManager.range)
+                    else if (_pathManager.enemyPosition == i + _towerManager.range)
                     {
-                        Console.SetCursorPosition(i + TowerManager.range, 1);
+                        Console.SetCursorPosition(i + _towerManager.range, 1);
                         Console.Write(@"\");
                         
                     }
-                    else if(PathManager.enemyPosition == i - TowerManager.range || PathManager.enemyPosition == i)
+                    else if(_pathManager.enemyPosition == i - _towerManager.range || _pathManager.enemyPosition == i)
                     {
                         Console.SetCursorPosition(i, 1);
                         Console.Write(@"V");
@@ -61,7 +70,7 @@ namespace P_LeoBouzon_tower_defense_OO
         public void EraseBullet(int line)
         {
             Console.SetCursorPosition(0, line);
-            for (int i = 0; i < TowerManager.TowerPlace.Length; i++)
+            for (int i = 0; i < _towerManager.TowerPlace.Length; i++)
             {
                 Console.Write(" ");
             }

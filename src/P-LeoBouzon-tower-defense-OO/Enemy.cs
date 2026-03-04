@@ -19,13 +19,29 @@ namespace P_LeoBouzon_tower_defense_OO
     internal class Enemy
     {
         // ========== ENNEMIES DATA ==========
-        private int enemyInitialHP = 100;
-        private int enemyHP;
-        private int enemyXMovement = 1;
+        private int _enemyInitialHP = 100;
+        public int enemyInitialHP
+        {
+            get { return _enemyInitialHP; }
+        }
+
+        private int _enemyHP ;
+        public int enemyHP
+        {
+            get { return _enemyHP; }
+            set
+            { _enemyHP = value; }
+        }
+
+        private int _enemyXMovement = 1;
+        public int enemyXMovement
+        {
+            get { return _enemyXMovement; }
+        }
 
         public Enemy()
         {
-            enemyHP = enemyInitialHP;
+            _enemyHP = enemyInitialHP;
         }
 
     }
