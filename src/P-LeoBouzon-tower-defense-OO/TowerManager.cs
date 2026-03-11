@@ -19,8 +19,8 @@ namespace P_LeoBouzon_tower_defense_OO
         private HUD _hud;
         public HUD Hud { set { _hud = value; } }
         
-        private Enemy _enemy;
-        public Enemy Enemy { set { _enemy = value; } }
+        private Monster _monster;
+        public Monster Monster { set { _monster = value; } }
         // ========== TOWER DATA ==========
         private int[] _TowerPlace = new int[20];
         public int[] TowerPlace
@@ -119,7 +119,7 @@ namespace P_LeoBouzon_tower_defense_OO
         // ========== TOWER SHOT SYSTEM ==========
         public void HandleTargetting()
         {
-            if (_enemy.enemyHP <= 0)
+            if (_monster.MonsterHP <= 0)
             {
                 enemyHit = false;
             }
@@ -134,7 +134,7 @@ namespace P_LeoBouzon_tower_defense_OO
                     {
                         _bullet.Shot();
                         DamageCalculation();
-                        if (_enemy.enemyHP <= 0)
+                        if (_monster.MonsterHP <= 0)
                         {
                             enemyHit = false;
                         }
@@ -146,11 +146,11 @@ namespace P_LeoBouzon_tower_defense_OO
         // ========== DAMAGE INFLICTED ==========
         private void DamageCalculation()
         {
-            _enemy.enemyHP -= damages;                                             // le nombre de PV de l'ennemi diminue de 25 quand il est touché
+            _monster.MonsterHP -= damages;                                             // le nombre de PV de l'ennemi diminue de 25 quand il est touché
 
-            if (_enemy.enemyHP < 0)
+            if (_monster.MonsterHP < 0)
             {
-                _enemy.enemyHP = 0;
+                _monster.MonsterHP = 0;
 
             }
             Console.SetCursorPosition(0, 5);

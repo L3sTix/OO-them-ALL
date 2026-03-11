@@ -14,28 +14,28 @@ namespace P_LeoBouzon_tower_defense_OO.Display
 {
     internal class HUD
     {
-        private Enemy _enemy;
+        private Monster _monster;
         private TowerManager _towerManager;
-        public HUD(Enemy enemy, TowerManager towerManager)
+        public HUD(Monster monster, TowerManager towerManager)
         {
-            _enemy = enemy;
+            _monster = monster;
             _towerManager = towerManager;
             _towerManager.Hud = this;
         }
         
         public void InitialPV()
         {
-            Console.Write($"PV restants : {_enemy.enemyInitialHP} ");
+            Console.Write($"PV restants : {_monster.MonsterInitialHP} ");
         }
         public void RemainingPV()
         {
-            Console.Write($"PV restants : {_enemy.enemyHP} ");
+            Console.Write($"PV restants : {_monster.MonsterHP} ");
 
         }
         public void DamageDisplay()
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.Write($"L'ennemi est touché (-" + _towerManager.damages + " PV) ");
+            Console.Write($"Le monstre est touché (-" + _towerManager.damages + " PV) ");
             Console.ResetColor();
         }
         public void GameLegend()
@@ -43,7 +43,7 @@ namespace P_LeoBouzon_tower_defense_OO.Display
             Console.SetCursorPosition(50, 4);
             Console.Write("Tour = T");
             Console.SetCursorPosition(50, 5);
-            Console.Write("Ennemi = E");
+            Console.Write("Monstre = M");
             Console.SetCursorPosition(50, 6);
             Console.Write("Chemin = ═");
             Console.SetCursorPosition(50, 7);

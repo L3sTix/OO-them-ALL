@@ -27,7 +27,7 @@ namespace P_LeoBouzon_tower_defense_OO.Display
         public void GameWin()
         {
             Console.SetCursorPosition(0, 7);
-            Console.Write($"Ennemi Mort ");
+            Console.Write($"Le monstre est mort ");
             Thread.Sleep(1000);
             Console.Clear();
             Console.CursorVisible = false;

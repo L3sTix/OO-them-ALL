@@ -16,32 +16,32 @@ using P_LeoBouzon_tower_defense_OO.Display;
 
 namespace P_LeoBouzon_tower_defense_OO
 {
-    internal class Enemy
+    internal class Monster
     {
-        // ========== ENNEMIES DATA ==========
-        private int _enemyInitialHP = 100;
-        public int enemyInitialHP
+        // ========== MONSTERS DATA ==========
+        private int _monsterInitialHP = 100;
+        public int MonsterInitialHP
         {
-            get { return _enemyInitialHP; }
+            get { return _monsterInitialHP; }
         }
 
-        private int _enemyHP ;
-        public int enemyHP
+        private int _monsterHP ;
+        public int MonsterHP
         {
-            get { return _enemyHP; }
+            get { return _monsterHP; }
             set
-            { _enemyHP = value; }
+            { _monsterHP = value; }
         }
 
-        private int _enemyXMovement = 1;
-        public int enemyXMovement
+        private int _monsterXMovement = 1;
+        public int MonsterXMovement
         {
-            get { return _enemyXMovement; }
+            get { return _monsterXMovement; }
         }
 
-        public Enemy()
+        public Monster()
         {
-            _enemyHP = enemyInitialHP;
+            _monsterHP = MonsterInitialHP;
         }
 
     }

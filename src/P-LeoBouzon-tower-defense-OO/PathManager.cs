@@ -20,31 +20,29 @@ namespace P_LeoBouzon_tower_defense_OO
         private HUD _hud;
         private WinCondition _winCondition = new WinCondition();
         private TowerManager _towerManager;
-        private Enemy _enemy;
+        private Monster _monster;
 
         public HUD Hud {set{ _hud = value; } }
         //public WinCondition WinCondition { set { _winCondition = value; } }
         public TowerManager TowerManager { set { _towerManager = value; } }
-        public Enemy Enemy { set { _enemy = value; } }
-
+        public Monster Monster { set { _monster = value; } }
 
 
 
         // ========== PATH DATA ==========
         private int[] GamePath = new int[20];
-        private int enemyOldPosition;
-        private int _enemyPosition = 0;
+        private int _monsterOldPosition;
+        private int _monsterPosition = 0;
         public int enemyPosition
         {
-            get { return _enemyPosition; }
+            get { return _monsterPosition; }
         }
         private int xPath = 0;
-        
 
         
 
         // ========== ENEMIES PATH MOVEMENT ==========
-        public void MoveEnemies()
+        public void MoveMonsters()
         {
             Console.CursorVisible = false;
 
@@ -61,53 +59,54 @@ namespace P_LeoBouzon_tower_defense_OO
             Console.SetCursorPosition(GamePath.Length + 1 , 3);
             Console.Write("C");
             Console.SetCursorPosition(enemyPosition, 3);
-            Console.Write("E");
+            Console.Write("M");
             Console.SetCursorPosition(0, 5);
             _hud.InitialPV();
 
             
-                
-            do
-            {
-                if (_enemy.enemyHP <= 0)
+
+                do
                 {
-
-                    _enemyPosition = GamePath.Length;
-                    _winCondition.GameWin();
-                    _winCondition.Win = true;
-
-                }
-
-                else
-                {
-                    enemyOldPosition = enemyPosition;
-
-                    if (enemyPosition < GamePath.Length)
+                    if (_monster.MonsterHP <= 0)
                     {
-                        _enemyPosition += _enemy.enemyXMovement;
+
+                        _monsterPosition = GamePath.Length;
+                        _winCondition.GameWin();
+                        _winCondition.Win = true;
+
                     }
+
                     else
                     {
-                        _enemyPosition = _enemy.enemyXMovement;
-                    }
+                        _monsterOldPosition = enemyPosition;
 
-                    Console.SetCursorPosition(enemyOldPosition, 3);
-                    Console.Write(" ");
+                        if (enemyPosition < GamePath.Length)
+                        {
+                            _monsterPosition += _monster.MonsterXMovement;
+                        }
+                        else
+                        {
+                            _monsterPosition = _monster.MonsterXMovement;
 
-                    Console.SetCursorPosition(enemyPosition, 3);
-                    Console.Write("E");
+                        }
 
-                    _towerManager.HandleTargetting();
-                    if (_enemy.enemyHP <= 0)
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.SetCursorPosition(_monsterOldPosition, 3);
+                        Console.Write(" ");
+
                         Console.SetCursorPosition(enemyPosition, 3);
-                        Console.Write("X");
-                    }
-                    Thread.Sleep(2000);
-                }
+                        Console.Write("M");
 
-            } while (enemyPosition != GamePath.Length);
+                        _towerManager.HandleTargetting();
+                        if (_monster.MonsterHP <= 0)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.SetCursorPosition(enemyPosition, 3);
+                            Console.Write("X");
+                        }
+                        Thread.Sleep(2000);
+                    }
+
+                } while (enemyPosition != GamePath.Length);
             
 
 
