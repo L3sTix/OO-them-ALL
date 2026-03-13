@@ -14,36 +14,46 @@ namespace P_LeoBouzon_tower_defense_OO.Display
 {
     internal class HUD
     {
-        private Monster _monster;
         private TowerManager _towerManager;
-        public HUD(Monster monster, TowerManager towerManager)
+        public HUD(TowerManager towerManager)
         {
-            _monster = monster;
             _towerManager = towerManager;
             _towerManager.Hud = this;
         }
-        
-        public void InitialPV()
-        {
-            Console.Write($"PV restants : {_monster.MonsterInitialHP} ");
-        }
-        public void RemainingPV()
-        {
-            Console.Write($"PV restants : {_monster.MonsterHP} ");
 
-        }
-        public void DamageDisplay()
+        public void AllEnemiesHP(List<Monster> monsters)
         {
+            for (int i = 0; i < monsters.Count; i++)
+            {
+                Console.SetCursorPosition(0, 5 + i);
+                if (monsters[i].MonsterHP <= 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.Write($"Ennemi {monsters[i].Symbol} : MORT          ");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.Write($"Ennemi {monsters[i].Symbol} : {monsters[i].MonsterHP} PV     ");
+                }
+            }
+        }
+        public void DamageDisplay(Monster monster)
+        {
+            Console.SetCursorPosition(0, 5 + _monsters_count + 1);
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.Write($"Le monstre est touché (-" + _towerManager.damages + " PV) ");
+            Console.Write($"{monster.Symbol} est touché (-{_towerManager.damages} PV) ");
             Console.ResetColor();
         }
+        private int _monsters_count = 0;
+        public int MonstersCount { set { _monsters_count = value; } }
+
         public void GameLegend()
         {
             Console.SetCursorPosition(50, 4);
             Console.Write("Tour = T");
             Console.SetCursorPosition(50, 5);
-            Console.Write("Monstre = M");
+            Console.Write("Ennemi = E");
             Console.SetCursorPosition(50, 6);
             Console.Write("Chemin = ═");
             Console.SetCursorPosition(50, 7);

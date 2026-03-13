@@ -17,53 +17,36 @@ namespace P_LeoBouzon_tower_defense_OO
     internal class Bullet
     {
         private TowerManager _towerManager;
-        private PathManager _pathManager;
         public Bullet(TowerManager towerManager, PathManager pathManager)
         {
             _towerManager = towerManager;
-            _pathManager = pathManager;
         }
-        
-        public void Shot()
+
+        public void Shot(int monsterPosition)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             EraseBullet(1);
-            
-            
+
             for (int i = 0; i < _towerManager.TowerPlace.Length; i++)
             {
-                
-
                 if (_towerManager.TowerPlace[i] == 1)
                 {
-                    
-                    
-                    if (_pathManager.enemyPosition == i - _towerManager.range)
+                    if (monsterPosition == i - _towerManager.range)
                     {
-                        Console.SetCursorPosition(i - _towerManager.range, 1);
+                        Console.SetCursorPosition(monsterPosition, 1);
                         Console.Write("/");
-                        
                     }
-                    else if (_pathManager.enemyPosition == i)
+                    else if (monsterPosition == i)
                     {
                         Console.SetCursorPosition(i, 1);
                         Console.Write("|");
-                        
                     }
-                    else if (_pathManager.enemyPosition == i + _towerManager.range)
+                    else if (monsterPosition == i + _towerManager.range)
                     {
-                        Console.SetCursorPosition(i + _towerManager.range, 1);
+                        Console.SetCursorPosition(monsterPosition, 1);
                         Console.Write(@"\");
-                        
                     }
-                    else if(_pathManager.enemyPosition == i - _towerManager.range || _pathManager.enemyPosition == i)
-                    {
-                        Console.SetCursorPosition(i, 1);
-                        Console.Write(@"V");
-                    }
-                    
                 }
-                
             }
             Console.ResetColor();
         }

@@ -20,32 +20,32 @@ namespace P_LeoBouzon_tower_defense_OO
         private HUD _hud;
         private WinCondition _winCondition = new WinCondition();
         private TowerManager _towerManager;
-        private Monster _monster;
+        
 
         public HUD Hud {set{ _hud = value; } }
-        //public WinCondition WinCondition { set { _winCondition = value; } }
         public TowerManager TowerManager { set { _towerManager = value; } }
-        public Monster Monster { set { _monster = value; } }
-
-
 
         // ========== PATH DATA ==========
         private int[] GamePath = new int[20];
-        private int _monsterOldPosition;
-        private int _monsterPosition = 0;
-        public int enemyPosition
-        {
-            get { return _monsterPosition; }
-        }
         private int xPath = 0;
 
-        
 
-        // ========== ENEMIES PATH MOVEMENT ==========
+        // ========== MONSTERS CREATION ==========
+        private List<Monster> _monsters = new List<Monster>
+        {
+            new Monster('K'),
+            new Monster('G'),
+            new Boss()
+        };
+
+
+
+        // ========== MONSTERS PATH MOVEMENT ==========
         public void MoveMonsters()
         {
             Console.CursorVisible = false;
 
+            // Dessin du chemin
             for (int i = 0; i < GamePath.Length + 1; i++)
             {
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -56,64 +56,98 @@ namespace P_LeoBouzon_tower_defense_OO
                 xPath += 1;
             }
             Console.ResetColor();
-            Console.SetCursorPosition(GamePath.Length + 1 , 3);
+            Console.SetCursorPosition(GamePath.Length + 1, 3);
             Console.Write("C");
-            Console.SetCursorPosition(enemyPosition, 3);
-            Console.Write("M");
-            Console.SetCursorPosition(0, 5);
-            _hud.InitialPV();
 
-            
+            _hud.MonstersCount = _monsters.Count;
+            _hud.AllEnemiesHP(_monsters);
 
-                do
+            int[] positions = new int[_monsters.Count];
+            int[] oldPositions = new int[_monsters.Count];
+            for (int i = 0; i < _monsters.Count; i++)
+            {
+                positions[i] = -i * 3;
+                oldPositions[i] = -1;
+            }
+            while (true)
+            {
+                bool allDone = true;
+                bool anyReached = false;
+
+                for (int i = 0; i < _monsters.Count; i++)
                 {
-                    if (_monster.MonsterHP <= 0)
+                    Monster monster = _monsters[i];
+
+                    // Ennemi déjà sorti du chemin
+                    if (positions[i] > GamePath.Length) continue;
+
+                    allDone = false;
+
+                    if (monster.MonsterHP <= 0)
                     {
-
-                        _monsterPosition = GamePath.Length;
-                        _winCondition.GameWin();
-                        _winCondition.Win = true;
-
-                    }
-
-                    else
-                    {
-                        _monsterOldPosition = enemyPosition;
-
-                        if (enemyPosition < GamePath.Length)
-                        {
-                            _monsterPosition += _monster.MonsterXMovement;
-                        }
-                        else
-                        {
-                            _monsterPosition = _monster.MonsterXMovement;
-
-                        }
-
-                        Console.SetCursorPosition(_monsterOldPosition, 3);
-                        Console.Write(" ");
-
-                        Console.SetCursorPosition(enemyPosition, 3);
-                        Console.Write("M");
-
-                        _towerManager.HandleTargetting();
-                        if (_monster.MonsterHP <= 0)
+                        if (positions[i] >= 0 && positions[i] < GamePath.Length)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkRed;
-                            Console.SetCursorPosition(enemyPosition, 3);
+                            Console.SetCursorPosition(positions[i], 3);
                             Console.Write("X");
+                            Console.ResetColor();
+                            Thread.Sleep(300);
+                            Console.SetCursorPosition(positions[i], 3);
+                            Console.Write(" ");
                         }
-                        Thread.Sleep(2000);
+                        positions[i] = GamePath.Length + 1;
+                        continue;
                     }
 
-                } while (enemyPosition != GamePath.Length);
-            
+                    // Effacer l'ancienne position
+                    if (oldPositions[i] >= 0 && oldPositions[i] < GamePath.Length)
+                    {
+                        Console.SetCursorPosition(oldPositions[i], 3);
+                        Console.Write(" ");
+                    }
 
+                    // Avancer l'ennemi
+                    oldPositions[i] = positions[i];
+                    positions[i] += monster.MonsterXMovement;
 
-            
-            if (_winCondition.Win == false)
-            {
-                _winCondition.GameLose();
+                    // Ennemi arrivé au château
+                    if (positions[i] >= GamePath.Length)
+                    {
+                        anyReached = true;
+                        positions[i] = GamePath.Length + 1;
+                        continue;
+                    }
+
+                    // Afficher le symbole de l'ennemi
+                    if (positions[i] >= 0)
+                    {
+                        Console.SetCursorPosition(positions[i], 3);
+                        Console.Write(monster.Symbol);
+                    }
+
+                }
+
+                _towerManager.HandleTargetting(_monsters, positions);
+                _hud.AllEnemiesHP(_monsters);
+
+                Thread.Sleep(500);
+
+                if (allDone || anyReached)
+                {
+                    _winCondition.GameLose();
+                    return;
+                }
+
+                // Tous les ennemis sont-ils morts ?
+                bool allKilled = true;
+                foreach (Monster m in _monsters)
+                    if (m.MonsterHP > 0) { allKilled = false; break; }
+
+                if (allKilled)
+                {
+                    _winCondition.GameWin();
+                    return;
+                }
             }
         }
     }

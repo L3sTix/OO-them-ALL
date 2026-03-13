@@ -21,20 +21,20 @@ namespace P_LeoBouzon_tower_defense_OO
         {
             PathManager path = new PathManager();
             TowerManager tower = new TowerManager(path);
-            Monster monster = new Monster();
+            
 
             // ========== MAIN CODE ========== 
             Menu menu = new Menu();
             menu.LaunchMenu();
-            HUD hud = new HUD(monster, tower);
+
+            HUD hud = new HUD(tower);
             hud.GameLegend();
 
             //post configuration
             path.TowerManager = tower;
             path.Hud = hud;
-            path.Monster = monster;
-            tower.Monster = monster;
-            
+            tower.PathLength = 20;
+
 
 
             tower.TowerPlacement();

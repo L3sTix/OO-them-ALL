@@ -19,13 +19,14 @@ namespace P_LeoBouzon_tower_defense_OO
     internal class Monster
     {
         // ========== MONSTERS DATA ==========
-        private int _monsterInitialHP = 100;
+        private string _name;
+        protected int _monsterInitialHP = 70;
         public int MonsterInitialHP
         {
             get { return _monsterInitialHP; }
         }
 
-        private int _monsterHP ;
+        protected int _monsterHP ;
         public int MonsterHP
         {
             get { return _monsterHP; }
@@ -39,9 +40,25 @@ namespace P_LeoBouzon_tower_defense_OO
             get { return _monsterXMovement; }
         }
 
-        public Monster()
+        private int _monsterOldPosition;
+        private int _monsterPosition = 0;
+        public int MonsterPosition
+        {
+            get { return _monsterPosition; }
+            set { }
+        }
+        public int MonsterOldPosition
+        {
+            get { return _monsterOldPosition; }
+            set { }
+        }
+        // Symbole affiché sur le chemin (première lettre du nom du monstre)
+        protected char _symbol;
+        public char Symbol => _symbol;
+        public Monster(char symbol = 'E')
         {
             _monsterHP = MonsterInitialHP;
+            _symbol = symbol;
         }
 
     }

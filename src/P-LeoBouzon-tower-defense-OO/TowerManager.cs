@@ -1,4 +1,5 @@
-﻿///***************************************************************************
+﻿using P_LeoBouzon_tower_defense_OO.Display;
+///***************************************************************************
 /// ETML
 /// Auteur          : Léo Bouzon
 /// Date            : 04.02.2026
@@ -9,8 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using P_LeoBouzon_tower_defense_OO.Display;
 
 namespace P_LeoBouzon_tower_defense_OO
 {
@@ -19,8 +20,6 @@ namespace P_LeoBouzon_tower_defense_OO
         private HUD _hud;
         public HUD Hud { set { _hud = value; } }
         
-        private Monster _monster;
-        public Monster Monster { set { _monster = value; } }
         // ========== TOWER DATA ==========
         private int[] _TowerPlace = new int[20];
         public int[] TowerPlace
@@ -42,25 +41,23 @@ namespace P_LeoBouzon_tower_defense_OO
         {
             get { return _damages; }
         }
-        private bool enemyHit = true;
         private int maxMoveX = 19;
         private int minMoveX = 1;
 
         private Bullet _bullet;
-
         private PathManager _pathmanager;
+        private int GamePath_Length = 20;
+        public int PathLength { set { GamePath_Length = value; } }
         public TowerManager(PathManager pathmanager)
         {
-            this._pathmanager = pathmanager;
+            _pathmanager = pathmanager;
             _bullet = new Bullet(this, pathmanager);
         }
 
         // ========== TOWER PLACEMENT ==========
         public void TowerPlacement()
         {
-            
             ConsoleKeyInfo towerMove;
-
             Console.Clear();
             Console.CursorVisible = false;
 
@@ -72,91 +69,67 @@ namespace P_LeoBouzon_tower_defense_OO
                 switch (towerMove.Key)
                 {
                     case ConsoleKey.RightArrow:
-
-                        if (towerPosition < maxMoveX)
-                        {
-                            towerPosition += towerXMovement;
-                        }
-                        else
-                        {
-                            towerPosition = minMoveX;
-                        }
+                        towerPosition = towerPosition < maxMoveX ? towerPosition + towerXMovement : minMoveX;
                         break;
-
                     case ConsoleKey.LeftArrow:
-
-                        if (towerPosition > minMoveX)
-                        {
-                            towerPosition -= towerXMovement;
-                        }
-                        else
-                        {
-                            towerPosition = maxMoveX;
-                        }
+                        towerPosition = towerPosition > minMoveX ? towerPosition - towerXMovement : maxMoveX;
                         break;
                 }
-                if ((towerMove.Key == ConsoleKey.Enter || towerMove.Key == ConsoleKey.Spacebar) && towerPlaced < maxTower && TowerPlace[towerPosition] == 0)
+
+                if ((towerMove.Key == ConsoleKey.Enter || towerMove.Key == ConsoleKey.Spacebar)
+                    && towerPlaced < maxTower && TowerPlace[towerPosition] == 0)
                 {
                     TowerPlace[towerPosition] = 1;
                     towerPlaced++;
                 }
+
                 Console.SetCursorPosition(0, 0);
                 Console.Write(new string(' ', maxMoveX + 1));
 
                 for (int i = 0; i <= maxMoveX; i++)
-                {
                     if (TowerPlace[i] == 1)
                     {
                         Console.SetCursorPosition(i, 0);
                         Console.Write("T");
                     }
-                }
+
                 Console.SetCursorPosition(towerPosition, 0);
                 Console.Write("T");
                 _hud.GameLegend();
             }
         }
         // ========== TOWER SHOT SYSTEM ==========
-        public void HandleTargetting()
+        // Chaque tour ne tire que sur un seul ennemi à la fois
+        public void HandleTargetting(List<Monster> monsters, int[] positions)
         {
-            if (_monster.MonsterHP <= 0)
-            {
-                enemyHit = false;
-            }
-
             _bullet.EraseBullet(1);
+
             for (int i = 0; i < TowerPlace.Length; i++)
             {
-                
-                if (enemyHit && TowerPlace[i] == 1)
-                {
-                    if (_pathmanager.enemyPosition >= i - range && _pathmanager.enemyPosition <= i + range)
-                    {
-                        _bullet.Shot();
-                        DamageCalculation();
-                        if (_monster.MonsterHP <= 0)
-                        {
-                            enemyHit = false;
-                        }
+                if (TowerPlace[i] != 1) continue;
 
+                // Cette tour cherche le premier ennemi dans sa portée
+                for (int j = 0; j < monsters.Count; j++)
+                {
+                    if (monsters[j].MonsterHP <= 0) continue;
+                    if (positions[j] > GamePath_Length) continue;
+
+                    if (positions[j] >= i - range && positions[j] <= i + range)
+                    {
+                        _bullet.Shot(positions[j]);
+                        DamageCalculation(monsters[j]);
+                        break; // cette tour a tiré, on passe à la tour suivante
                     }
                 }
             }
         }
         // ========== DAMAGE INFLICTED ==========
-        private void DamageCalculation()
+        private void DamageCalculation(Monster monster)
         {
-            _monster.MonsterHP -= damages;                                             // le nombre de PV de l'ennemi diminue de 25 quand il est touché
+            monster.MonsterHP -= damages;
+            if (monster.MonsterHP < 0) monster.MonsterHP = 0;
 
-            if (_monster.MonsterHP < 0)
-            {
-                _monster.MonsterHP = 0;
-
-            }
-            Console.SetCursorPosition(0, 5);
-            _hud.RemainingPV();
-            Console.SetCursorPosition(0, 6);
-            _hud.DamageDisplay();
+            _hud.DamageDisplay(monster);
         }
     }
 }
